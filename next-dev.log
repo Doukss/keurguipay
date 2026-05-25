@@ -32,3 +32,14 @@ Creating turbopack project {
  GET /pay/test-123 200 in 511ms (next.js: 332ms, application-code: 179ms)
 ✓ Compiled in 237ms
  GET /pay/test-123 200 in 398ms (next.js: 225ms, application-code: 173ms)
+▲ Next.js 16.2.7 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+- Environments: .env
+✓ Ready in 2.2s
+Creating turbopack project {
+  dir: 'C:\\Users\\HP\\Desktop\\Licence3Dev\\KeurGuiPay\\frontend',
+  testMode: true
+}
+
+ GET /pay/test-123 200 in 3.5s (next.js: 2.8s, application-code: 751ms)

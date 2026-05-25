@@ -79,3 +79,4 @@ https://react.dev/link/hydration-mismatch
 [browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
 [browser] SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
 SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON (components/pay/page.tsx:65:15)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
