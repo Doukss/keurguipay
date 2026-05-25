@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js" // Corrigé : le provider standard est prisma-client-js
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Les Enums pour sécuriser les états ---
+
+enum PaymentStatus {
+  PENDING   // En attente de paiement
+  PAID      // Payé avec succès
+  OVERDUE   // En retard (échéance dépassée)
+}
+
+enum PaymentMethod {
+  WAVE
+  ORANGE_MONEY
+  FREE_MONEY
+  CASH
+}
+
+// --- Les Modèles ---
+
+model Agency {
+  id         String     @id @default(uuid()) // UUID géré par Prisma/Postgres
+  name       String
+  email      String     @unique
+  phone      String     // Format international (ex: "+22177...")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  
+  // Relations
+  properties Property[]
+
+  @@map("agencies") // Renomme la table en minuscules dans Postgres pour Supabase
+}
+
+model Property {
+  id        String   @id @default(uuid())
+  title     String   // Ex: "Appartement 3B Ngor" ou "Villa 14 fann"
+  address   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relation avec l'agence
+  agencyId  String   @map("agency_id")
+  agency    Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+
+  // Relations
+  tenants   Tenant[]
+
+  @@map("properties")
+}
+
+model Tenant {
+  id         String   @id @default(uuid())
+  firstName  String   @map("first_name")
+  lastName   String   @map("last_name")
+  phone      String   // Le numéro qui recevra les SMS/WhatsApp (+221...)
+  rentAmount Float    @map("rent_amount") // Montant du loyer (ex: 150000)
+  dueDay     Int      @map("due_day")     // Le jour du mois où il doit payer (ex: 5)
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  // Relation avec le bien immobilier
+  propertyId String   @map("property_id")
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Relations
+  payments   Payment[]
+
+  @@map("tenants")
+}
+
+model Payment {
+  id            String         @id @default(uuid())
+  amount        Float          // Le montant demandé pour ce mois précis
+  dueDate       DateTime       @map("due_date") // Date exacte limite (ex: 2026-06-05)
+  status        PaymentStatus  @default(PENDING)
+  paymentMethod PaymentMethod? @map("payment_method") // Optionnel tant que ce n'est pas payé
+  transactionId String?        @unique @map("transaction_id") // Le token ou ID transaction renvoyé par PayTech
+  paidAt        DateTime?      @map("paid_at")  // Rempli au moment du Webhook
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  // Relation avec le locataire
+  tenantId      String         @map("tenant_id")
+  tenant        Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
