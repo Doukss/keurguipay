@@ -1,44 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 
-// Interface pour typer nos données de paiement
-interface PaymentDetails {
+type PaymentDetails = {
   id: string;
   amount: number;
   tenantName: string;
   propertyName: string;
   agencyName: string;
   status: string;
-}
+};
 
 export default function PaymentPage() {
   const params = useParams();
-  const paymentId = params.id as string;
-
-  const [payment, setPayment] = useState<PaymentDetails | null>(null);
-  const [loading, setLoading] = useState(true);
+  const paymentId = String(params.id ?? "demo-payment");
   const [submitting, setSubmitting] = useState(false);
 
-  // 1. Simuler ou récupérer les infos du paiement au chargement
-  useEffect(() => {
-    // Plus tard, tu feras un fetch(`/api/payments/${paymentId}`)
-    // Pour l'instant, on mock les données pour tester ton design
-    setPayment({
+  const payment = useMemo<PaymentDetails>(
+    () => ({
       id: paymentId,
       amount: 175000,
       tenantName: "Moustapha Diop",
       propertyName: "Appartement 4A - Almadies",
-      agencyName: "ImmoSénégal S.A.R.L",
+      agencyName: "ImmoSenegal S.A.R.L",
       status: "PENDING",
-    });
-    setLoading(false);
-  }, [paymentId]);
+    }),
+    [paymentId],
+  );
 
-  // 2. Fonction pour déclencher le paiement vers PayTech
   const handlePayment = async () => {
-    if (!payment) return;
     setSubmitting(true);
 
     try {
@@ -55,80 +46,75 @@ export default function PaymentPage() {
       const data = await response.json();
 
       if (data.success && data.redirectUrl) {
-        // Redirection directe vers la page de paiement sécurisée PayTech (Wave/OM)
         window.location.href = data.redirectUrl;
-      } else {
-        alert("Erreur lors de l'initialisation du paiement. Réessayez.");
-        setSubmitting(false);
+        return;
       }
+
+      alert("Erreur lors de l'initialisation du paiement. Reessayez.");
+      setSubmitting(false);
     } catch (error) {
       console.error(error);
-      alert("Une erreur réseau est survenue.");
+      alert("Une erreur reseau est survenue.");
       setSubmitting(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <p className="text-gray-500 animate-pulse">Chargement de votre facture KeurGui Pay...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50 px-4 py-8 justify-between sm:justify-center sm:items-center">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-6 border border-gray-100 sm:my-auto">
-        
-        {/* En-tête de l'Agence */}
-        <div className="text-center mb-6">
-          <span className="text-xs font-semibold tracking-wider text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full">
-            Demande de règlement
+    <div className="flex min-h-screen flex-col justify-between bg-gray-50 px-4 py-8 sm:items-center sm:justify-center">
+      <div className="w-full max-w-md rounded-lg border border-gray-100 bg-white p-6 shadow-sm sm:my-auto">
+        <div className="mb-6 text-center">
+          <span className="rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-violet-600">
+            Demande de reglement
           </span>
-          <h1 className="text-xl font-bold text-gray-800 mt-3">{payment?.agencyName}</h1>
-          <p className="text-sm text-gray-500 mt-1">{payment?.propertyName}</p>
+          <h1 className="mt-3 text-xl font-bold text-gray-800">
+            {payment.agencyName}
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">{payment.propertyName}</p>
         </div>
 
-        <hr className="border-gray-100 my-4" />
+        <hr className="my-4 border-gray-100" />
 
-        {/* Détails du montant */}
-        <div className="bg-gray-50 rounded-xl p-4 text-center my-6">
-          <p className="text-xs text-gray-400 uppercase font-medium tracking-wide">Montant du loyer</p>
-          <p className="text-3xl font-black text-slate-900 mt-1">
-            {payment?.amount.toLocaleString("fr-FR")} <span className="text-xl font-bold">FCFA</span>
+        <div className="my-6 rounded-lg bg-gray-50 p-4 text-center">
+          <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+            Montant du loyer
+          </p>
+          <p className="mt-1 text-3xl font-black text-slate-900">
+            {payment.amount.toLocaleString("fr-FR")}{" "}
+            <span className="text-xl font-bold">FCFA</span>
           </p>
         </div>
 
-        {/* Informations Locataire */}
-        <div className="space-y-3 mb-8 text-sm">
-          <div className="flex justify-between">
+        <div className="mb-8 space-y-3 text-sm">
+          <div className="flex justify-between gap-4">
             <span className="text-gray-400">Locataire</span>
-            <span className="font-semibold text-gray-700">{payment?.tenantName}</span>
+            <span className="font-semibold text-gray-700">{payment.tenantName}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-400">Référence Facture</span>
-            <span className="font-mono text-xs text-gray-500">{payment?.id.substring(0, 8)}...</span>
+          <div className="flex justify-between gap-4">
+            <span className="text-gray-400">Reference facture</span>
+            <span className="font-mono text-xs text-gray-500">
+              {payment.id.substring(0, 8)}...
+            </span>
           </div>
         </div>
 
-        {/* Bouton d'action principal */}
         <button
           onClick={handlePayment}
           disabled={submitting}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl shadow-md transition duration-200 disabled:bg-purple-300 flex items-center justify-center space-x-2"
+          className="flex w-full items-center justify-center rounded-lg bg-violet-600 px-6 py-4 font-semibold text-white shadow-md transition hover:bg-violet-700 disabled:bg-violet-300"
         >
-          {submitting ? (
-            <span>Redirection vers Wave / Orange Money...</span>
-          ) : (
-            <span>Procéder au paiement</span>
-          )}
+          {submitting
+            ? "Redirection vers Wave / Orange Money..."
+            : "Proceder au paiement"}
         </button>
       </div>
 
-      {/* Footer de réassurance */}
-      <div className="text-center text-xs text-gray-400 mt-6 space-y-1">
-        <p>🔒 Paiement 100% sécurisé</p>
-        <p>Propulsé par <span className="font-semibold text-blue-500">KeurGui Pay</span> & PayTech</p>
+      <div className="mt-6 space-y-1 text-center text-xs text-gray-400">
+        <p>Paiement 100% securise</p>
+        <p>
+          Propulse par{" "}
+          <span className="font-semibold text-violet-500">KeurGui Pay</span> &
+          PayTech
+        </p>
       </div>
     </div>
   );
