@@ -260,3 +260,5 @@ Creating turbopack project {
 }
 
  GET /biens 200 in 1195ms (next.js: 566ms, application-code: 629ms)
+ GET /proprietaires 200 in 257ms (next.js: 168ms, application-code: 90ms)
+ GET /dashboard 200 in 190ms (next.js: 93ms, application-code: 98ms)
