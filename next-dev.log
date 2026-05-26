@@ -259,3 +259,4 @@ Creating turbopack project {
   testMode: true
 }
 
+ GET /biens 200 in 1195ms (next.js: 566ms, application-code: 629ms)
