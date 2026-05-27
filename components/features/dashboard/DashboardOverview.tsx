@@ -11,7 +11,10 @@ import {
 } from "@/lib/mock-data";
 
 export default function DashboardOverview() {
-  const totalToCollect = rentPayments.reduce((sum, rent) => sum + rent.amount, 0);
+  const totalToCollect = rentPayments.reduce(
+    (sum, rent) => sum + rent.amount,
+    0,
+  );
   const totalCollected = rentPayments
     .filter((rent) => rent.status === "PAID")
     .reduce((sum, rent) => sum + rent.amount, 0);
@@ -32,7 +35,10 @@ export default function DashboardOverview() {
       />
 
       <section className="grid gap-4 md:grid-cols-4">
-        <StatCard label="Total attendu" value={formatCurrency(totalToCollect)} />
+        <StatCard
+          label="Total attendu"
+          value={formatCurrency(totalToCollect)}
+        />
         <StatCard
           label="Total encaisse"
           value={formatCurrency(totalCollected)}
@@ -74,7 +80,9 @@ export default function DashboardOverview() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {rentPayments.map((rent) => {
-                const tenant = tenants.find((item) => item.id === rent.tenantId);
+                const tenant = tenants.find(
+                  (item) => item.id === rent.tenantId,
+                );
                 const property = getPropertyById(rent.propertyId);
 
                 return (
@@ -82,7 +90,9 @@ export default function DashboardOverview() {
                     <td className="px-5 py-4 font-medium text-slate-900">
                       {tenant?.firstName} {tenant?.lastName}
                     </td>
-                    <td className="px-5 py-4 text-slate-600">{property?.name}</td>
+                    <td className="px-5 py-4 text-slate-600">
+                      {property?.name}
+                    </td>
                     <td className="px-5 py-4 font-semibold text-slate-900">
                       {formatCurrency(rent.amount)}
                     </td>

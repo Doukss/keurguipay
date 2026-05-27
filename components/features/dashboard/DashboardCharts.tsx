@@ -38,7 +38,11 @@ const statusColors: Record<RentStatus, string> = {
   OVERDUE: "#e11d48",
 };
 
-const statusOptions: Array<{ value: "ALL" | RentStatus; label: string; color: string }> = [
+const statusOptions: Array<{
+  value: "ALL" | RentStatus;
+  label: string;
+  color: string;
+}> = [
   { value: "ALL", label: "Tous", color: "#64748b" },
   { value: "PAID", label: "Payés", color: "#10b981" },
   { value: "PENDING", label: "En attente", color: "#f59e0b" },
@@ -86,7 +90,9 @@ function CollectionAreaChart() {
     <section className="rounded-xl border border-slate-200 bg-linear-to-br from-white to-slate-50 p-6 shadow-lg">
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <h3 className="font-semibold text-slate-950">Evolution des encaissements</h3>
+          <h3 className="font-semibold text-slate-950">
+            Evolution des encaissements
+          </h3>
           <p className="mt-1 text-sm text-slate-500">
             Comparaison du montant attendu et encaisse.
           </p>
@@ -94,14 +100,19 @@ function CollectionAreaChart() {
         <div className="rounded-lg bg-emerald-50 px-3 py-2 text-right">
           <p className="text-xs font-medium text-emerald-700">Dernier mois</p>
           <p className="text-sm font-bold text-emerald-800">
-            {formatCurrency(monthlyCollections[monthlyCollections.length - 1].collected)}
+            {formatCurrency(
+              monthlyCollections[monthlyCollections.length - 1].collected,
+            )}
           </p>
         </div>
       </div>
 
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
+          <AreaChart
+            data={chartData}
+            margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
+          >
             <defs>
               <linearGradient id="encaisseGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
@@ -112,7 +123,11 @@ function CollectionAreaChart() {
                 <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#e2e8f0"
+              vertical={false}
+            />
             <XAxis
               dataKey="month"
               axisLine={false}
@@ -186,7 +201,9 @@ function StatusDonutChart() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
       <h3 className="font-semibold text-slate-950">Statut des loyers</h3>
-      <p className="mt-1 text-sm text-slate-500">Repartition du mois en cours.</p>
+      <p className="mt-1 text-sm text-slate-500">
+        Repartition du mois en cours.
+      </p>
 
       <div className="mt-6 flex flex-col items-center">
         <ResponsiveContainer width={180} height={180}>
@@ -225,9 +242,15 @@ function StatusDonutChart() {
 
       <div className="mt-5 space-y-3">
         {statusCounts.map((item) => (
-          <div key={item.status} className="flex items-center justify-between text-sm">
+          <div
+            key={item.status}
+            className="flex items-center justify-between text-sm"
+          >
             <span className="flex items-center gap-2 text-slate-600">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: item.color }}
+              />
               {item.label}
             </span>
             <span className="font-semibold text-slate-900">{item.value}</span>
@@ -257,7 +280,7 @@ function PropertyRevenueChart({
           status: tenant?.status ?? "PENDING",
         };
       }),
-    []
+    [],
   );
 
   const filteredData = useMemo(
@@ -265,20 +288,23 @@ function PropertyRevenueChart({
       selectedStatus === "ALL"
         ? chartData
         : chartData.filter((entry) => entry.status === selectedStatus),
-    [selectedStatus, chartData]
+    [selectedStatus, chartData],
   );
 
   const selectedLabel =
     selectedStatus === "ALL"
       ? "Tous les statuts"
-      : statusOptions.find((option) => option.value === selectedStatus)?.label ?? "Filtre";
+      : (statusOptions.find((option) => option.value === selectedStatus)
+          ?.label ?? "Filtre");
 
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
       <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h3 className="font-semibold text-slate-950">Revenus par bien</h3>
-          <p className="mt-1 text-sm text-slate-500">Filtrer selon le statut du loyer.</p>
+          <p className="mt-1 text-sm text-slate-500">
+            Filtrer selon le statut du loyer.
+          </p>
         </div>
         <div className="flex flex-wrap gap-2">
           {statusOptions.map((option) => (
@@ -299,7 +325,8 @@ function PropertyRevenueChart({
       </div>
 
       <div className="mb-4 rounded-3xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-        <span className="font-semibold text-slate-900">{selectedLabel}</span> — {filteredData.length} bien(s)
+        <span className="font-semibold text-slate-900">{selectedLabel}</span> —{" "}
+        {filteredData.length} bien(s)
       </div>
 
       <ResponsiveContainer width="100%" height={260}>
@@ -308,7 +335,11 @@ function PropertyRevenueChart({
           layout="vertical"
           margin={{ top: 5, right: 20, left: 90, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#e2e8f0"
+            horizontal={false}
+          />
           <XAxis
             type="number"
             axisLine={false}
@@ -348,13 +379,27 @@ function PropertyRevenueChart({
 }
 
 export default function DashboardCharts() {
-  const totalExpected = monthlyCollections.reduce((sum, item) => sum + item.expected, 0);
-  const totalCollected = monthlyCollections.reduce((sum, item) => sum + item.collected, 0);
+  const totalExpected = monthlyCollections.reduce(
+    (sum, item) => sum + item.expected,
+    0,
+  );
+  const totalCollected = monthlyCollections.reduce(
+    (sum, item) => sum + item.collected,
+    0,
+  );
   const collectionRate = Math.round((totalCollected / totalExpected) * 100);
-  const totalPaid = rentPayments.filter((rent) => rent.status === "PAID").length;
-  const totalOverdue = rentPayments.filter((rent) => rent.status === "OVERDUE").length;
-  const totalPending = rentPayments.filter((rent) => rent.status === "PENDING").length;
-  const [selectedStatus, setSelectedStatus] = useState<"ALL" | RentStatus>("ALL");
+  const totalPaid = rentPayments.filter(
+    (rent) => rent.status === "PAID",
+  ).length;
+  const totalOverdue = rentPayments.filter(
+    (rent) => rent.status === "OVERDUE",
+  ).length;
+  const totalPending = rentPayments.filter(
+    (rent) => rent.status === "PENDING",
+  ).length;
+  const [selectedStatus, setSelectedStatus] = useState<"ALL" | RentStatus>(
+    "ALL",
+  );
 
   return (
     <div className="space-y-6">
@@ -382,26 +427,41 @@ export default function DashboardCharts() {
       <div className="rounded-3xl border border-slate-200 bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 p-6 text-white shadow-2xl shadow-slate-950/10">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Analyse des flux</p>
+            <p className="text-sm uppercase tracking-[0.24em] text-slate-400">
+              Analyse des flux
+            </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-white">
               Suivi des encaissements dynamiques
             </h2>
             <p className="mt-3 max-w-xl text-base leading-7 text-slate-300">
-              Visualisez l'évolution des montants attendus et encaissés, ainsi que la performance par statut de loyer.
+              Visualisez l'évolution des montants attendus et encaissés, ainsi
+              que la performance par statut de loyer.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-3xl bg-slate-900/80 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Payé</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{totalPaid}</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                Payé
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {totalPaid}
+              </p>
             </div>
             <div className="rounded-3xl bg-slate-900/80 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">En attente</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{totalPending}</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                En attente
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {totalPending}
+              </p>
             </div>
             <div className="rounded-3xl bg-slate-900/80 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">En retard</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{totalOverdue}</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                En retard
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {totalOverdue}
+              </p>
             </div>
           </div>
         </div>
