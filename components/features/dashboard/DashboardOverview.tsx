@@ -1,6 +1,7 @@
 import PageHeader from "@/components/features/PageHeader";
 import StatCard from "@/components/features/StatCard";
 import StatusBadge from "@/components/features/StatusBadge";
+import DashboardCharts from "@/components/features/dashboard/DashboardCharts";
 import {
   formatCurrency,
   getPropertyById,
@@ -51,7 +52,11 @@ export default function DashboardOverview() {
         />
       </section>
 
-      <section className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm">
+      <section className="mt-6">
+        <DashboardCharts />
+      </section>
+
+      <section className="mt-8 rounded-lg border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-200 px-5 py-4">
           <h3 className="text-sm font-semibold text-slate-900">
             Derniers loyers du mois

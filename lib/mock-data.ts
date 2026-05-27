@@ -39,6 +39,12 @@ export type RentPayment = {
   status: RentStatus;
 };
 
+export type MonthlyCollection = {
+  month: string;
+  expected: number;
+  collected: number;
+};
+
 export const owners: Owner[] = [
   {
     id: "owner-1",
@@ -154,6 +160,15 @@ export const rentPayments: RentPayment[] = tenants.map((tenant, index) => ({
   dueDate: "2026-06-05",
   status: tenant.status,
 }));
+
+export const monthlyCollections: MonthlyCollection[] = [
+  { month: "Jan", expected: 820000, collected: 760000 },
+  { month: "Fev", expected: 845000, collected: 790000 },
+  { month: "Mar", expected: 910000, collected: 850000 },
+  { month: "Avr", expected: 915000, collected: 880000 },
+  { month: "Mai", expected: 930000, collected: 910000 },
+  { month: "Juin", expected: 945000, collected: 495000 },
+];
 
 export function formatCurrency(amount: number) {
   return `${amount.toLocaleString("fr-FR")} FCFA`;

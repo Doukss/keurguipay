@@ -262,3 +262,34 @@ Creating turbopack project {
  GET /biens 200 in 1195ms (next.js: 566ms, application-code: 629ms)
  GET /proprietaires 200 in 257ms (next.js: 168ms, application-code: 90ms)
  GET /dashboard 200 in 190ms (next.js: 93ms, application-code: 98ms)
+✓ Compiled in 1573ms
+ GET /dashboard 200 in 416ms (next.js: 169ms, application-code: 247ms)
+ GET /dashboard 200 in 232ms (next.js: 10ms, application-code: 222ms)
+ GET /dashboard 200 in 249ms (next.js: 6ms, application-code: 243ms)
+ GET /dashboard 200 in 426ms (next.js: 8ms, application-code: 417ms)
+ GET /dashboard 200 in 367ms (next.js: 9ms, application-code: 357ms)
+ GET /dashboard 200 in 286ms (next.js: 13ms, application-code: 273ms)
+ GET /dashboard 200 in 289ms (next.js: 102ms, application-code: 187ms)
+ GET /dashboard 200 in 109ms (next.js: 10ms, application-code: 99ms)
+ GET /dashboard 200 in 247ms (next.js: 9ms, application-code: 238ms)
+ GET /locataires 200 in 169ms (next.js: 116ms, application-code: 52ms)
+ GET /loyers 200 in 137ms (next.js: 87ms, application-code: 50ms)
+ GET /dashboard 200 in 74ms (next.js: 11ms, application-code: 64ms)
+✓ Compiled in 225ms
+ GET /dashboard 200 in 192ms (next.js: 10ms, application-code: 181ms)
+ GET / 307 in 555ms (next.js: 177ms, application-code: 379ms)
+ GET /dashboard 200 in 205ms (next.js: 8ms, application-code: 197ms)
+ GET /dashboard 200 in 213ms (next.js: 10ms, application-code: 203ms)
+ GET / 307 in 345ms (next.js: 11ms, application-code: 334ms)
+ GET /dashboard 200 in 206ms (next.js: 10ms, application-code: 196ms)
+ GET /dashboard 200 in 202ms (next.js: 9ms, application-code: 193ms)
+▲ Next.js 16.2.7 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+- Environments: .env
+✓ Ready in 11.8s
+Creating turbopack project {
+  dir: 'C:\\Users\\HP\\Desktop\\Licence3Dev\\KeurGuiPay\\frontend',
+  testMode: true
+}
+
