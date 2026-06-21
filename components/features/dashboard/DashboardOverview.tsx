@@ -11,14 +11,20 @@ import {
 } from "@/lib/mock-data";
 
 export default function DashboardOverview() {
-  const totalToCollect = rentPayments.reduce((sum, rent) => sum + rent.amount, 0);
+  const totalToCollect = rentPayments.reduce(
+    (sum, rent) => sum + rent.amount,
+    0,
+  );
   const totalCollected = rentPayments
     .filter((rent) => rent.status === "PAID")
     .reduce((sum, rent) => sum + rent.amount, 0);
   const totalOverdue = rentPayments
     .filter((rent) => rent.status === "OVERDUE")
     .reduce((sum, rent) => sum + rent.amount, 0);
-  const totalUnits = properties.reduce((sum, property) => sum + property.units, 0);
+  const totalUnits = properties.reduce(
+    (sum, property) => sum + property.units,
+    0,
+  );
   const occupiedUnits = properties.reduce(
     (sum, property) => sum + property.occupiedUnits,
     0,
