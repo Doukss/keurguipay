@@ -11,50 +11,49 @@ import {
 } from "@/lib/mock-data";
 
 export default function DashboardOverview() {
-  const totalToCollect = rentPayments.reduce(
-    (sum, rent) => sum + rent.amount,
-    0,
-  );
+  const totalToCollect = rentPayments.reduce((sum, rent) => sum + rent.amount, 0);
   const totalCollected = rentPayments
     .filter((rent) => rent.status === "PAID")
     .reduce((sum, rent) => sum + rent.amount, 0);
   const totalOverdue = rentPayments
     .filter((rent) => rent.status === "OVERDUE")
     .reduce((sum, rent) => sum + rent.amount, 0);
-  const occupancyRate =
-    (properties.reduce((sum, property) => sum + property.occupiedUnits, 0) /
-      properties.reduce((sum, property) => sum + property.units, 0)) *
-    100;
+  const totalUnits = properties.reduce((sum, property) => sum + property.units, 0);
+  const occupiedUnits = properties.reduce(
+    (sum, property) => sum + property.occupiedUnits,
+    0,
+  );
+  const occupancyRate = totalUnits > 0 ? (occupiedUnits / totalUnits) * 100 : 0;
 
   return (
     <>
       <PageHeader
         title="Tableau de bord"
         description="Vue globale de l'activite locative et des encaissements."
-        actionLabel="Ajouter un locataire"
       />
 
-      <section className="grid gap-4 md:grid-cols-4">
+      <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Total attendu"
+          label="À encaisser"
           value={formatCurrency(totalToCollect)}
+          detail={`${rentPayments.length} paiements attendus`}
         />
         <StatCard
-          label="Total encaisse"
+          label="Encaissements"
           value={formatCurrency(totalCollected)}
-          detail={`${Math.round((totalCollected / totalToCollect) * 100)}% collectes`}
           tone="success"
+          detail="Montant reçu ce mois"
         />
         <StatCard
-          label="Total en retard"
+          label="En retard"
           value={formatCurrency(totalOverdue)}
-          detail="Relance requise"
           tone="danger"
+          detail="Sommes impayées"
         />
         <StatCard
-          label="Occupation"
-          value={`${occupancyRate.toFixed(0)}%`}
-          detail={`${tenants.length} locataires actifs`}
+          label="Taux d'occupation"
+          value={`${occupancyRate.toFixed(1)} %`}
+          detail={`${occupiedUnits}/${totalUnits} unités occupées`}
         />
       </section>
 
